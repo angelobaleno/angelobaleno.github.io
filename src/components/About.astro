@@ -1,0 +1,117 @@
+---
+---
+
+<section class="section section--bone about" id="about">
+  <div class="container about__grid">
+    <aside class="about__aside reveal">
+      <img src="/logo/mark.svg" alt="" width="64" height="66" class="about__mark" />
+      <p class="label about__label">About</p>
+      <dl class="about__meta">
+        <div><dt>Discipline</dt><dd>Designer who builds</dd></div>
+        <div><dt>Since</dt><dd>Est. 2020</dd></div>
+        <div><dt>Based</dt><dd>Pittsburgh, PA</dd></div>
+      </dl>
+    </aside>
+
+    <div class="about__copy reveal">
+      <h2 class="about__title">A standard, not a service<span class="dot">.</span></h2>
+      <p>
+        Web design is my focus, graphics alongside it. I design and build, end
+        to end, to a standard: the details that make a site feel built, not
+        bought. The work should match the effort behind it.
+      </p>
+    </div>
+  </div>
+</section>
+
+<style>
+  /* copy is short by design — pull the section in so it doesn't sprawl */
+  .about {
+    padding-block: clamp(3.5rem, 8vh, 5.5rem);
+  }
+
+  .about__grid {
+    display: grid;
+    grid-template-columns: minmax(220px, 1fr) 2fr;
+    gap: clamp(2.5rem, 6vw, 5rem);
+    align-items: center;
+  }
+
+  .about .label {
+    color: var(--steel);
+  }
+
+  .about__aside {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .about__mark {
+    width: 64px;
+    height: auto;
+  }
+
+  .about__label {
+    margin: 0;
+  }
+
+  /* mono meta block — the carved data that gives the aside weight */
+  .about__meta {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+  }
+
+  .about__meta div {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .about__meta dt {
+    font-family: var(--font-mono);
+    font-size: 0.625rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--brass);
+  }
+
+  .about__meta dd {
+    margin: 0;
+    font-weight: 500;
+    font-size: 1rem;
+    color: var(--ink);
+  }
+
+  .about__title {
+    font-weight: 600;
+    font-size: clamp(2rem, 4.5vw, 3.25rem);
+    letter-spacing: -0.015em;
+    line-height: 1.05;
+    margin-bottom: 2rem;
+  }
+
+  .about__copy p {
+    font-size: clamp(1.0625rem, 1.5vw, 1.25rem);
+    line-height: 1.6;
+    max-width: 54ch;
+    color: var(--ink);
+  }
+
+  .about__copy p + p {
+    margin-top: 1.125rem;
+  }
+
+  @media (max-width: 720px) {
+    .about__grid {
+      grid-template-columns: 1fr;
+      gap: 2.75rem;
+    }
+    /* headline + copy lead; mark + data sit below as a clean vertical block,
+       not a cramped wrapping row */
+    .about__copy { order: -1; }
+  }
+</style>

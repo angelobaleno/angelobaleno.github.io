@@ -1,0 +1,119 @@
+---
+---
+
+<header class="header">
+  <div class="container header__row">
+    <a href="#top" class="lockup" aria-label="Angelo Baleno — home">
+      <img src="/logo/mark-reversed.svg" alt="" width="28" height="29" class="lockup__mark" />
+      <span class="lockup__name">Angelo Baleno<span class="dot">.</span></span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      <a href="#work">Work</a>
+      <a href="#about">About</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </div>
+</header>
+
+<style>
+  .header {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background: rgba(20, 20, 20, 0.55);
+    backdrop-filter: blur(14px) saturate(115%);
+    -webkit-backdrop-filter: blur(14px) saturate(115%);
+    border-bottom: 1px solid var(--hairline-on-ink);
+  }
+
+  .header__row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+  }
+
+  .lockup {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .lockup__mark {
+    width: 28px;
+    height: auto;
+  }
+
+  .lockup__name {
+    font-weight: 700; /* the only place Bold is used */
+    font-size: 1.0625rem;
+    letter-spacing: -0.01em;
+  }
+
+  .nav {
+    display: flex;
+    gap: clamp(1.25rem, 3vw, 2.5rem);
+  }
+
+  .nav a {
+    position: relative;
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted-on-ink);
+    transition: color 0.2s ease;
+  }
+
+  /* active-section underline */
+  .nav a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1px;
+    background: var(--brass);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.25s var(--ease-settle);
+  }
+
+  .nav a:hover,
+  .nav a:focus-visible,
+  .nav a.is-active {
+    color: var(--bone);
+  }
+
+  .nav a:hover::after,
+  .nav a.is-active::after {
+    transform: scaleX(1);
+  }
+
+  @media (max-width: 480px) {
+    .lockup__name { font-size: 1rem; }
+    .nav { gap: 1rem; }
+  }
+</style>
+
+<script>
+  // Light up the nav link for the section you're currently in.
+  const links = Array.from(document.querySelectorAll('.nav a'));
+  const linkById = {};
+  links.forEach((a) => { linkById[a.getAttribute('href').slice(1)] = a; });
+  // sections -> nav link (Graphics rolls up into Work)
+  const group = { work: 'work', graphics: 'work', about: 'about', contact: 'contact' };
+  const setActive = (id) => {
+    const target = linkById[group[id]];
+    links.forEach((a) => a.classList.toggle('is-active', a === target));
+  };
+  const sections = Object.keys(group)
+    .map((id) => document.getElementById(id))
+    .filter(Boolean);
+  const io = new IntersectionObserver(
+    (entries) => entries.forEach((e) => { if (e.isIntersecting) setActive(e.target.id); }),
+    { rootMargin: '-45% 0px -45% 0px', threshold: 0 }
+  );
+  sections.forEach((s) => io.observe(s));
+</script>

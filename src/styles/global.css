@@ -1,0 +1,128 @@
+/* ============================================================
+   Angelo Baleno — portfolio
+   Token layer. Locked brand values — do not add colors.
+   ============================================================ */
+
+:root {
+  /* Color — the only palette */
+  --ink: #141414;
+  --bone: #F4F1EA;
+  --brass: #B08A4F;
+  --steel: #6B7079;
+
+  /* Derived, still on-palette: ink/bone at low alpha for hairlines */
+  --hairline-on-ink: rgba(244, 241, 234, 0.14);
+  --hairline-on-bone: rgba(20, 20, 20, 0.14);
+  --muted-on-ink: rgba(244, 241, 234, 0.62);
+
+  /* Type */
+  --font-sans: 'General Sans', system-ui, sans-serif;
+  --font-display: 'Tusker Grotesk', 'Arial Narrow', sans-serif;
+  --font-mono: 'Martian Mono', ui-monospace, monospace;
+
+  /* Rhythm */
+  --container: 1200px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --section-pad: clamp(5rem, 12vh, 9rem);
+
+  /* Motion — a flash, then settled */
+  --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --speed-fast: 0.45s;
+}
+
+/* Tusker Grotesk — display only (hero, tagline, big numbers) */
+@font-face {
+  font-family: 'Tusker Grotesk';
+  src: url('/fonts/TuskerGrotesk-6700Bold.woff2') format('woff2');
+  font-weight: 100 900;
+  font-display: swap;
+}
+
+/* ---------- Reset / base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--ink);
+  color: var(--bone);
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 1rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+img, svg { display: block; max-width: 100%; }
+
+h1, h2, h3, p { margin: 0; }
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* consistent keyboard-focus ring across the whole site */
+:where(a, button):focus-visible {
+  outline: 2px solid var(--brass);
+  outline-offset: 3px;
+  border-radius: 1px;
+}
+
+::selection {
+  background: var(--brass);
+  color: var(--ink);
+}
+
+/* ---------- Shared pieces ---------- */
+.container {
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+/* Mono label: small, uppercase, letter-spaced. Keep strings short. */
+.label {
+  font-family: var(--font-mono);
+  font-weight: 400;
+  font-size: 0.6875rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--steel);
+}
+
+.section {
+  padding-block: var(--section-pad);
+}
+
+/* Bone section variant */
+.section--bone {
+  background: var(--bone);
+  color: var(--ink);
+}
+
+/* Brass full stop — the one flex */
+.dot { color: var(--brass); }
+
+/* ---------- Scroll reveal (quiet; hero has its own sequence) ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity var(--speed-fast) var(--ease-settle),
+    transform var(--speed-fast) var(--ease-settle);
+}
+
+.reveal.in {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; transition: none; }
+}
