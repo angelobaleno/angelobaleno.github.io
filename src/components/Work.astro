@@ -3,11 +3,10 @@ interface Project {
   num: string;
   title: string;
   blurb: string;
-  tags: string[];
+  meta: string;
   status: string;
   img: string;
   href: string;
-  wide?: boolean;
 }
 
 const projects: Project[] = [
@@ -17,18 +16,17 @@ const projects: Project[] = [
     img: '/work/athlete.webp',
     blurb:
       'A platform of recruiting sites for athletes — each one built to look recruited, not templated. Themed per athlete. First live: a DB recruit, Class of 2027.',
-    tags: ['Platform', 'Astro', 'SSR'],
+    meta: 'Platform · Astro · SSR · Supabase',
     status: 'Live',
     href: 'https://tyler-baleno-site.vercel.app/',
-    wide: true,
   },
   {
     num: '02',
-    title: 'Brian Baleno — Author Site',
+    title: 'Brian Baleno',
     img: '/work/brian.webp',
     blurb:
       'A warm, literary single-scroll site for an author, with a page for each book.',
-    tags: ['Web', 'Astro'],
+    meta: 'Author site · Astro · Static',
     status: 'Live',
     href: 'https://angelobaleno.github.io/brian-baleno-site/',
   },
@@ -38,7 +36,7 @@ const projects: Project[] = [
     img: '/work/webbs.webp',
     blurb:
       'A charcoal-and-gold single-scroll site for a Pittsburgh gym.',
-    tags: ['Web', 'Astro'],
+    meta: 'Gym site · Astro · Static',
     status: 'Live',
     href: 'https://angelobaleno.github.io/webbs-world-of-fitness/',
   },
@@ -47,30 +45,27 @@ const projects: Project[] = [
 
 <section class="section work" id="work">
   <div class="container">
-    <div class="work__head reveal">
-      <p class="label">Work</p>
-      <h2 class="work__title">The proof<span class="dot">.</span></h2>
+    <div class="sechead reveal">
+      <div class="sechead__main">
+        <p class="label">Work</p>
+        <h2 class="work__title">The proof<span class="dot">.</span></h2>
+      </div>
+      <p class="label sechead__aside">03 sites — all live</p>
     </div>
 
-    <div class="cards">
+    <div class="plates">
       {projects.map((p) => (
-        <a class={`card reveal${p.wide ? ' card--wide' : ''}`} href={p.href} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} — open the live site`}>
-          <div class="card__media">
-            <img class="card__shot" src={p.img} alt={`${p.title} screenshot`} loading="lazy" decoding="async" width="1400" height="875" />
-            <span class="card__num">{p.num}</span>
+        <a class="plate reveal" href={p.href} target="_blank" rel="noopener noreferrer" aria-label={`${p.title} — open the live site`}>
+          <div class="plate__media">
+            <img class="plate__shot" src={p.img} alt={`${p.title} screenshot`} loading="lazy" decoding="async" width="1600" height="850" />
+            <span class="plate__num" aria-hidden="true">{p.num}</span>
+            <span class="label plate__visit" aria-hidden="true">Visit ↗</span>
           </div>
-          <div class="card__body">
-            <div class="card__row">
-              <h3 class="card__name">{p.title}</h3>
-              <span class="label card__status">{p.status}</span>
-            </div>
-            <p class="card__blurb">{p.blurb}</p>
-            <ul class="card__tags" role="list">
-              {p.tags.map((t) => (
-                <li class="label">{t}</li>
-              ))}
-            </ul>
+          <div class="plate__row">
+            <h3 class="plate__name">{p.title}</h3>
+            <p class="label plate__meta">{p.meta} — <span class="plate__status">{p.status}</span></p>
           </div>
+          <p class="plate__blurb">{p.blurb}</p>
         </a>
       ))}
     </div>
@@ -78,136 +73,132 @@ const projects: Project[] = [
 </section>
 
 <style>
-  .work__head {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: clamp(2.5rem, 6vh, 4rem);
-  }
-
   .work__title {
     font-weight: 600;
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    letter-spacing: -0.01em;
-    line-height: 1.1;
+    font-size: var(--title-section);
+    letter-spacing: -0.015em;
+    line-height: 1.05;
   }
 
-  .cards {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: clamp(1rem, 2vw, 1.5rem);
-  }
-
-  .card--wide {
-    grid-column: 1 / -1;
-  }
-
-  /* centerpiece: let the featured shot sit a touch wider than the 16:10 cards */
-  .card--wide .card__media {
-    aspect-ratio: 16 / 9;
-  }
-
-  .card {
+  /* ---- The gallery: each site is a full-width plate, hung like work ---- */
+  .plates {
     display: flex;
     flex-direction: column;
+    gap: clamp(4rem, 9vh, 6.5rem);
+  }
+
+  .plate {
+    display: block;
+    color: inherit;
+  }
+
+  .plate__media {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
     border: 1px solid var(--hairline-on-ink);
     background: var(--ink);
-    color: inherit;
-    transition: border-color 0.25s ease, transform 0.25s var(--ease-settle);
+    transition: border-color 0.2s var(--ease-cut);
   }
 
-  .card:hover,
-  .card:focus-visible {
+  .plate:hover .plate__media,
+  .plate:focus-visible .plate__media {
     border-color: var(--steel);
-    transform: translateY(-3px);
   }
 
-  .card__media {
-    position: relative;
-    aspect-ratio: 16 / 10;
-    overflow: hidden;
-    border-bottom: 1px solid var(--brass);
-  }
-
-  .card__shot {
+  /* screenshot sits crisp — no forced zoom, no drift. The card holds still;
+     only the accent cues shift on hover. */
+  .plate__shot {
     width: 100%;
     height: 100%;
     object-fit: cover;
     object-position: top;
     display: block;
-    transition: transform 0.5s var(--ease-settle);
   }
 
-  .card:hover .card__shot,
-  .card:focus-visible .card__shot {
-    transform: scale(1.04);
-  }
-
-  /* scrim so the index number stays legible over any screenshot */
-  .card__media::before {
+  /* scrim so the index number and visit cue hold over any screenshot */
+  .plate__media::before {
     content: "";
     position: absolute;
     inset: 0 0 auto 0;
-    height: 44%;
-    background: linear-gradient(to bottom, rgba(20, 20, 20, 0.55), transparent);
+    height: 34%;
+    background: linear-gradient(to bottom, rgba(20, 20, 20, 0.5), transparent);
     pointer-events: none;
   }
 
-  .card__num {
+  .plate__num {
     position: absolute;
-    top: 0.75rem;
-    left: 1rem;
+    top: 1rem;
+    left: 1.25rem;
     z-index: 1;
     font-family: var(--font-display);
     font-weight: 700;
-    font-size: 1.9rem;
+    font-size: 2.4rem;
     line-height: 1;
     color: var(--bone);
+    transition: color 0.15s var(--ease-cut);
   }
 
-  .card__body {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    padding: 1.25rem 1rem 1.375rem;
-    flex: 1;
+  .plate:hover .plate__num,
+  .plate:focus-visible .plate__num {
+    color: var(--brass);
   }
 
-  .card__row {
+  .plate__visit {
+    position: absolute;
+    top: 1.375rem;
+    right: 1.25rem;
+    z-index: 1;
+    color: var(--bone);
+    opacity: 0;
+    transition: opacity 0.15s var(--ease-cut);
+  }
+
+  .plate:hover .plate__visit,
+  .plate:focus-visible .plate__visit {
+    opacity: 1;
+  }
+
+  /* editorial title line under the plate */
+  .plate__row {
     display: flex;
     align-items: baseline;
     justify-content: space-between;
-    gap: 0.75rem;
+    gap: 1.5rem;
+    padding: 1.25rem 0 1rem;
+    border-bottom: 1px solid var(--hairline-on-ink);
   }
 
-  .card__name {
+  .plate__name {
     font-weight: 600;
-    font-size: 1.125rem;
-    letter-spacing: -0.005em;
-    line-height: 1.3;
+    font-size: clamp(1.375rem, 2.4vw, 1.875rem);
+    letter-spacing: -0.01em;
+    line-height: 1.15;
   }
 
-  .card__status {
-    color: var(--brass);
+  .plate__meta {
+    text-align: right;
     white-space: nowrap;
   }
 
-  .card__blurb {
+  .plate__status {
+    color: var(--brass);
+  }
+
+  .plate__blurb {
+    margin-top: 0.9rem;
     color: var(--muted-on-ink);
-    font-size: 0.9375rem;
-    flex: 1;
+    font-size: 0.9875rem;
+    max-width: 64ch;
   }
 
-  .card__tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem 1rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-
-  @media (max-width: 900px) {
-    .cards { grid-template-columns: 1fr; }
+  @media (max-width: 700px) {
+    .plate__media { aspect-ratio: 16 / 10; }
+    .plate__row {
+      flex-direction: column;
+      gap: 0.5rem;
+      align-items: flex-start;
+    }
+    .plate__meta { text-align: left; white-space: normal; }
   }
 </style>

@@ -3,20 +3,29 @@
 
 <section class="hero" id="top">
   <div class="hero__light" aria-hidden="true"></div>
-  <div class="hero__shaft" aria-hidden="true"></div>
-  <canvas class="hero__dust" aria-hidden="true"></canvas>
+  <div class="hero__grain" aria-hidden="true"></div>
   <div class="hero__vignette" aria-hidden="true"></div>
 
   <div class="container hero__inner">
     <div class="hero__frame">
 
-      <img
-        src="/logo/mark-reversed.svg"
-        alt="Angelo Baleno mark"
-        class="hero__mark"
-        width="84"
-        height="87"
-      />
+      <div class="hero__mark" role="img" aria-label="Angelo Baleno mark">
+        <div class="hero__mark-float">
+          <div class="hero__mark-tilt" id="heroMark">
+            <div class="mk mk--ring" aria-hidden="true">
+              <svg viewBox="0 0 262.28 270.74" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#B08A4F" d="M30.65,162.4C2.73,184.94-1.65,194.3.45,198.49c6.84,13.66,90.58-11.09,158.89-46.53,48.8-25.32,108.15-65.64,102.57-77.95-2.2-4.86-14.95-6.27-52.27,2.41,8.14-.74,21.3-1.27,23.43,3.95,4.89,11.99-51.3,47.15-95.43,68.49-43.79,21.17-107.89,44.28-114.96,32.03-2.44-4.22,2.41-11.78,7.97-18.5Z"/>
+              </svg>
+            </div>
+            <div class="mk mk--bolt" aria-hidden="true">
+              <svg viewBox="0 0 262.28 270.74" xmlns="http://www.w3.org/2000/svg">
+                <path fill="#F4F1EA" d="M213.82,0c-10.75,32.47-21.49,64.94-32.24,97.41h27c-11.14,7.68-23.18,15.37-36.13,22.89-32.13,18.64-62.96,32.17-90.61,42.11h-30.17c24.93-19.53,51.53-42.4,78.68-69C163.36,61.06,190.96,29.27,213.82,0Z"/>
+                <path fill="#F4F1EA" d="M79.12,195.98c13.15-4.42,27.1-9.63,41.64-15.81,16.85-7.16,32.24-14.65,46.15-22.09-18.71,15.17-38.69,32.85-59.11,53.31-20.47,20.51-38.14,40.57-53.29,59.35,8.21-24.92,16.41-49.84,24.62-74.76Z"/>
+              </svg>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <h1 class="hero__headline">
         <span class="line line--mid"><span class="line__inner">Make it</span></span>
@@ -35,6 +44,29 @@
   </div>
 </section>
 
+<script>
+  // The crown leans toward the cursor as it crosses the hero — a small,
+  // reactive tilt that reveals the depth between the ring and the bolt.
+  const mark = document.getElementById('heroMark');
+  const hero = document.getElementById('top');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (mark && hero && !reduce) {
+    const MAX = 14; // degrees of lean at the edges
+    hero.addEventListener('pointermove', (e) => {
+      const r = hero.getBoundingClientRect();
+      const dx = ((e.clientX - r.left) / r.width - 0.5) * 2;   // -1 … 1
+      const dy = ((e.clientY - r.top) / r.height - 0.5) * 2;
+      mark.style.setProperty('--mry', (dx * MAX).toFixed(2) + 'deg');
+      mark.style.setProperty('--mrx', (-dy * MAX).toFixed(2) + 'deg');
+    });
+    hero.addEventListener('pointerleave', () => {
+      mark.style.setProperty('--mry', '0deg');
+      mark.style.setProperty('--mrx', '0deg');
+    });
+  }
+</script>
+
 <style>
   .hero {
     position: relative;
@@ -43,43 +75,28 @@
     overflow: hidden;
   }
 
-  /* ---- Environmental light: warm bloom entering the shadow ---- */
+  /* ---- Environmental light: one still pool. It enters once, then holds.
+     Nothing sweeps, nothing twinkles — stillness is the luxury. ---- */
   .hero__light {
     position: absolute;
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(52% 42% at 50% 40%, rgba(240, 226, 194, 0.16), transparent 70%),
-      linear-gradient(to bottom, rgba(240, 226, 194, 0.05), transparent 44%);
+      radial-gradient(46% 38% at 50% 48%, rgba(240, 226, 194, 0.15), transparent 72%),
+      linear-gradient(to bottom, rgba(240, 226, 194, 0.04), transparent 44%);
     opacity: 0;
-    animation:
-      light-enter 2.8s ease-in-out 0.15s forwards,
-      light-drift 13s ease-in-out 0s infinite alternate;
+    animation: light-enter 3s ease-in-out 0.15s forwards;
   }
 
-  /* a faint shaft of light, slowly sweeping — part of the drifting light */
-  .hero__shaft {
+  /* fine static grain — material, not effect. Reads as paper/film up close. */
+  .hero__grain {
     position: absolute;
     inset: 0;
     pointer-events: none;
-    background: linear-gradient(102deg, transparent 40%, rgba(240, 226, 194, 0.085) 50%, transparent 60%);
-    mix-blend-mode: screen;
-    opacity: 0;
-    animation:
-      light-enter 3s ease-in-out 0.35s forwards,
-      shaft-drift 18s ease-in-out 0s infinite alternate;
-  }
-
-  /* dust motes drifting in the light — drawn on canvas by the script below */
-  .hero__dust {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    display: block;
-    opacity: 0;
-    animation: light-enter 2.6s ease-in-out 0.5s forwards;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    background-size: 160px 160px;
+    opacity: 0.05;
+    mix-blend-mode: overlay;
   }
 
   /* Vignette: bright pool in the center, deep shadow to the edges (the drama),
@@ -91,7 +108,7 @@
     pointer-events: none;
     background:
       linear-gradient(to bottom, transparent 56%, var(--ink) 95%),
-      radial-gradient(82% 68% at 50% 40%, transparent 38%, rgba(6, 6, 6, 0.62) 100%);
+      radial-gradient(82% 68% at 50% 48%, transparent 38%, rgba(6, 6, 6, 0.62) 100%);
   }
 
   .hero__inner {
@@ -138,15 +155,48 @@
   .hero__frame::before { left: 0; }
   .hero__frame::after  { right: 0; }
 
-  /* ---- Mark: the keystone, crowning the facade ---- */
+  /* ---- Mark: the keystone, crowning the facade ----
+     Three nested stages so each transform stays in its own lane:
+       .hero__mark        — the entrance (fade + settle) and the 3D viewport
+       .hero__mark-float  — the slow, continuous bob (translate only)
+       .hero__mark-tilt   — the cursor lean (rotate only), set by JS
+     The ring sits back and the bolt rides forward, so the lean reveals real
+     parallax between them. It settles still — a flash, then held. */
   .hero__mark {
     width: clamp(64px, 6.5vw, 88px);
-    height: auto;
+    aspect-ratio: 262.28 / 270.74;
     margin-bottom: clamp(1.75rem, 4.5vh, 3rem);
+    perspective: 620px;
     opacity: 0;
     transform: translateY(-8px) scale(0.92);
     animation: mark-set 0.9s var(--ease-settle) 0.1s forwards;
   }
+
+  .hero__mark-float {
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    /* begins once the entrance has landed */
+    animation: mark-float 6s ease-in-out 1.2s infinite;
+  }
+
+  .hero__mark-tilt {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transform-style: preserve-3d;
+    transform: rotateX(var(--mrx, 0deg)) rotateY(var(--mry, 0deg));
+    transition: transform 0.4s var(--ease-settle);
+  }
+
+  .mk {
+    position: absolute;
+    inset: 0;
+  }
+  .mk svg { width: 100%; height: 100%; display: block; overflow: visible; }
+  .mk--bolt { transform: translateZ(8px); }
+  .mk--ring { transform: translateZ(-7px); }
+  .mk--bolt svg { filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.5)); }
 
   /* ---- Monumental statement — a poster lockup, set like carved stone ---- */
   .hero__headline {
@@ -187,7 +237,8 @@
     text-box: trim-both cap alphabetic;
   }
 
-  /* The full stop — a round brass inlay, not Tusker's square glyph. The one flex. */
+  /* The full stop — a round brass inlay, not Tusker's square glyph. The one flex.
+     It lands last: the flash at the end of the sequence, then settled. */
   .dot {
     display: inline-block;
     width: 0.13em;
@@ -196,6 +247,9 @@
     background: var(--brass);
     vertical-align: baseline;
     margin-left: 0.1em;
+    opacity: 0;
+    transform: scale(0.4);
+    animation: dot-flash 0.38s var(--ease-settle) 1.35s forwards;
   }
 
   .hero__threshold {
@@ -228,14 +282,26 @@
     to { opacity: 1; }
   }
 
-  @keyframes light-drift {
-    from { transform: translate(-5%, -3%) scale(1.02); }
-    to   { transform: translate(5%, 4%) scale(1.2); }
+  @keyframes dot-flash {
+    0%   { opacity: 0; transform: scale(0.4); }
+    55%  { opacity: 1; transform: scale(1.22); }
+    100% { opacity: 1; transform: scale(1); }
   }
 
-  @keyframes shaft-drift {
-    from { transform: translateX(-9%); }
-    to   { transform: translateX(9%); }
+  /* ---- Exit: walking out of the temple. Scroll-driven, no JS; browsers
+     without scroll timelines simply skip it. ---- */
+  @supports (animation-timeline: scroll()) {
+    @media (prefers-reduced-motion: no-preference) {
+      .hero__frame {
+        animation: hero-leave linear both;
+        animation-timeline: scroll();
+        animation-range: 0 90vh;
+      }
+    }
+  }
+
+  @keyframes hero-leave {
+    to { transform: translateY(-26px); opacity: 0.5; }
   }
 
   @keyframes jamb-rise {
@@ -250,71 +316,29 @@
     to { opacity: 1; transform: translateY(0) scale(1); }
   }
 
+  @keyframes mark-float {
+    0%, 100% { translate: 0 0; }
+    50%      { translate: 0 -5px; }
+  }
+
   @keyframes fade-set {
     to { opacity: 1; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .hero__light,
-    .hero__shaft,
-    .hero__dust,
     .hero__frame::before,
     .hero__frame::after,
     .hero__mark,
+    .hero__mark-float,
+    .hero__mark-tilt,
     .line .line__inner,
     .hero__threshold,
-    .hero__support {
+    .hero__support,
+    .dot {
       animation: none;
       transform: none;
       opacity: 1;
     }
   }
 </style>
-
-<script>
-  // Dust motes drifting in the light. Sparse and slow — never a particle effect.
-  const c = document.querySelector('.hero__dust');
-  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (c instanceof HTMLCanvasElement && !reduce) {
-    const ctx = c.getContext('2d');
-    let W = 0, H = 0, dpr = 1, parts = [];
-    const makeP = () => ({
-      x: Math.random() * W,
-      y: Math.random() * H,
-      r: Math.random() * 1.8 + 0.5,
-      vx: (Math.random() - 0.5) * 0.17,
-      vy: -(Math.random() * 0.22 + 0.07),
-      a: Math.random() * 0.55 + 0.28,
-      tw: Math.random() * Math.PI * 2,
-    });
-    const size = () => {
-      const rect = c.getBoundingClientRect();
-      dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = rect.width; H = rect.height;
-      c.width = W * dpr; c.height = H * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-      parts = Array.from({ length: 50 }, makeP);
-    };
-    const loop = () => {
-      ctx.clearRect(0, 0, W, H);
-      for (const p of parts) {
-        p.x += p.vx; p.y += p.vy; p.tw += 0.032;
-        if (p.y < -6) { p.y = H + 6; p.x = Math.random() * W; }
-        if (p.x < -6) p.x = W + 6;
-        if (p.x > W + 6) p.x = -6;
-        const dx = (p.x - W / 2) / (W / 2);
-        const dy = (p.y - H * 0.42) / (H * 0.5);
-        const light = Math.max(0, 1 - Math.sqrt(dx * dx + dy * dy));
-        const alpha = p.a * (0.22 + 0.9 * light) * (0.7 + 0.3 * Math.sin(p.tw));
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, 7);
-        ctx.fillStyle = 'rgba(240,226,194,' + alpha.toFixed(3) + ')';
-        ctx.fill();
-      }
-      requestAnimationFrame(loop);
-    };
-    size();
-    window.addEventListener('resize', size);
-    requestAnimationFrame(loop);
-  }
-</script>
