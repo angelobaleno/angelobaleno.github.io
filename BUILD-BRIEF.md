@@ -79,7 +79,7 @@ Sections, in order:
    images are TBD. Card hover = composed, fast, intentional.
 4. **About** — first person ("I", never "we"), plain, composed. Designer who builds; sports/esports
    graphics origin (since ~2020); a standard, not a service.
-5. **Contact** — simple, direct. Email `angelojbaleno@gmail.com`. Mono labels.
+5. **Contact** — simple, direct. Email `abaleno@thedevshop.com`. Mono labels.
 6. **Footer** — mark, `A standard, not a service.` or the short signature `in a flash`, minimal.
 
 ### Featured work (real projects — use these)
