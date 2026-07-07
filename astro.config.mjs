@@ -5,5 +5,5 @@ import { defineConfig } from 'astro/config';
 // (angelobaleno.github.io) — no `base`, so root-absolute asset paths work as-is.
 // When angelobaleno.com is pointed here, switch `site` to that domain.
 export default defineConfig({
-  site: 'https://angelobaleno.github.io',
+  site: 'https://angelobaleno.com',
 });
