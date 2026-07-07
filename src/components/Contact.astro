@@ -3,10 +3,15 @@
 
 <section class="section contact" id="contact">
   <div class="container">
-    <p class="label reveal">Contact</p>
-    <h2 class="contact__line reveal">
-      Let&rsquo;s get to work<span class="dot">.</span>
-    </h2>
+    <div class="sechead reveal">
+      <div class="sechead__main">
+        <p class="label">Contact</p>
+        <h2 class="contact__line">
+          Let&rsquo;s get to work<span class="dot">.</span>
+        </h2>
+      </div>
+      <p class="label sechead__aside">Pittsburgh, PA</p>
+    </div>
     <p class="contact__prompt reveal">Tell me what you&rsquo;re building.</p>
     <div class="contact__row reveal">
       <span class="label">Email</span>
@@ -18,11 +23,10 @@
 <style>
   .contact__line {
     font-weight: 600;
-    font-size: clamp(1.75rem, 4vw, 3rem);
-    letter-spacing: -0.01em;
-    line-height: 1.15;
+    font-size: var(--title-section);
+    letter-spacing: -0.015em;
+    line-height: 1.05;
     max-width: 20ch;
-    margin-top: 0.75rem;
   }
 
   .contact__prompt {
@@ -39,18 +43,40 @@
     margin-top: clamp(1.75rem, 4vh, 2.5rem);
   }
 
+  /* the conversion point — the loudest text after the hero.
+     Its brass underline draws once the row stamps in. */
   .contact__email {
+    position: relative;
     font-weight: 600;
-    font-size: clamp(1.125rem, 2.4vw, 1.625rem);
-    letter-spacing: -0.005em;
-    border-bottom: 1px solid var(--hairline-on-ink);
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    letter-spacing: -0.01em;
     align-self: flex-start;
-    padding-bottom: 0.125rem;
-    transition: border-color 0.2s ease;
+    padding-bottom: 0.375rem;
+  }
+
+  .contact__email::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 1px;
+    background: var(--brass);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-cut) 0.3s;
+  }
+
+  .contact__row.in .contact__email::after {
+    transform: scaleX(1);
   }
 
   .contact__email:hover,
   .contact__email:focus-visible {
-    border-color: var(--brass);
+    color: var(--brass);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .contact__email::after { transform: none; transition: none; }
   }
 </style>

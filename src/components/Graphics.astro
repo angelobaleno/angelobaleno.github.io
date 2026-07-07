@@ -32,9 +32,12 @@ const graphics: Graphic[] = [
 
 <section class="section graphics" id="graphics">
   <div class="container">
-    <div class="graphics__head reveal">
-      <p class="label">Graphics</p>
-      <h2 class="graphics__title">For the game<span class="dot">.</span></h2>
+    <div class="sechead reveal">
+      <div class="sechead__main">
+        <p class="label">Graphics</p>
+        <h2 class="graphics__title">For the game<span class="dot">.</span></h2>
+      </div>
+      <p class="label sechead__aside">Since 2020</p>
     </div>
 
     <div class="graphics__grid">
@@ -54,31 +57,34 @@ const graphics: Graphic[] = [
 </section>
 
 <style>
-  .graphics__head {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-bottom: clamp(2.5rem, 6vh, 4rem);
+  /* hairline threshold between the two ink galleries */
+  .graphics {
+    padding-top: 0;
+  }
+
+  .graphics > .container {
+    border-top: 1px solid var(--hairline-on-ink);
+    padding-top: var(--section-pad);
   }
 
   .graphics__title {
     font-weight: 600;
-    font-size: clamp(1.75rem, 3.5vw, 2.5rem);
-    letter-spacing: -0.01em;
-    line-height: 1.1;
+    font-size: var(--title-section);
+    letter-spacing: -0.015em;
+    line-height: 1.05;
   }
 
   .graphics__grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: clamp(1rem, 2vw, 1.5rem);
+    gap: clamp(1.5rem, 3.5vw, 2.75rem);
   }
 
   .g {
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 0.85rem;
+    gap: 0;
   }
 
   .g--wide {
@@ -119,11 +125,13 @@ const graphics: Graphic[] = [
     align-items: baseline;
     justify-content: space-between;
     gap: 1rem;
+    padding: 1rem 0 0.875rem;
+    border-bottom: 1px solid var(--hairline-on-ink);
   }
 
   .g__name {
     font-weight: 600;
-    font-size: 1rem;
+    font-size: 1.0625rem;
     letter-spacing: -0.005em;
   }
 

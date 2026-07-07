@@ -23,18 +23,44 @@
   /* Rhythm */
   --container: 1200px;
   --gutter: clamp(1.25rem, 4vw, 3rem);
-  --section-pad: clamp(5rem, 12vh, 9rem);
+  --section-pad: clamp(6rem, 14vh, 10.5rem);
+  --title-section: clamp(2.25rem, 4.5vw, 3.25rem);
 
   /* Motion — a flash, then settled */
   --ease-settle: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-cut: cubic-bezier(0.16, 0, 0.08, 1);
   --speed-fast: 0.45s;
 }
 
-/* Tusker Grotesk — display only (hero, tagline, big numbers) */
+/* All faces self-hosted — no third-party font requests */
 @font-face {
   font-family: 'Tusker Grotesk';
   src: url('/fonts/TuskerGrotesk-6700Bold.woff2') format('woff2');
   font-weight: 100 900;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'General Sans';
+  src: url('/fonts/GeneralSans-Regular.woff2') format('woff2');
+  font-weight: 400;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'General Sans';
+  src: url('/fonts/GeneralSans-Semibold.woff2') format('woff2');
+  font-weight: 600;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'General Sans';
+  src: url('/fonts/GeneralSans-Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Martian Mono';
+  src: url('/fonts/MartianMono-Variable.woff2') format('woff2');
+  font-weight: 100 800;
   font-display: swap;
 }
 
@@ -78,6 +104,17 @@ a {
   color: var(--ink);
 }
 
+/* Scrollbar in the site's material, not the browser's */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--ink); }
+::-webkit-scrollbar-thumb {
+  background: rgba(244, 241, 234, 0.18);
+  border: 3px solid var(--ink);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover { background: rgba(244, 241, 234, 0.32); }
+html { scrollbar-color: rgba(244, 241, 234, 0.24) var(--ink); }
+
 /* ---------- Shared pieces ---------- */
 .container {
   max-width: var(--container);
@@ -97,6 +134,51 @@ a {
 
 .section {
   padding-block: var(--section-pad);
+  scroll-margin-top: 4.5rem; /* anchor nav clears the sticky header */
+}
+
+/* ---------- Section head: label + title, data on the baseline ---------- */
+.sechead {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1.5rem;
+  margin-bottom: clamp(3rem, 7vh, 4.75rem);
+}
+
+.sechead__main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sechead__aside {
+  padding-bottom: 0.4rem;
+}
+
+@media (max-width: 700px) {
+  .sechead__aside { display: none; }
+}
+
+/* the label draws its brass tick when the head stamps in */
+.sechead__main .label {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.sechead__main .label::after {
+  content: "";
+  width: 2.25rem;
+  height: 1px;
+  background: var(--brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.3s var(--ease-cut) 0.15s;
+}
+
+.reveal.in .label::after {
+  transform: scaleX(1);
 }
 
 /* Bone section variant */
@@ -108,21 +190,26 @@ a {
 /* Brass full stop — the one flex */
 .dot { color: var(--brass); }
 
-/* ---------- Scroll reveal (quiet; hero has its own sequence) ---------- */
+/* ---------- Scroll reveal ----------
+   One eased move, finished before the eye arrives: reveals trigger early
+   (see layout script), rise 12px and settle. Stagger is assigned per batch
+   of elements that appear together, so nothing waits alone. */
 .reveal {
   opacity: 0;
-  transform: translateY(14px);
-  transition:
-    opacity var(--speed-fast) var(--ease-settle),
-    transform var(--speed-fast) var(--ease-settle);
+  transform: translateY(12px);
 }
 
 .reveal.in {
   opacity: 1;
   transform: none;
+  transition:
+    opacity 0.55s var(--ease-settle),
+    transform 0.55s var(--ease-settle);
+  transition-delay: calc(var(--stagger, 0) * 90ms);
 }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   .reveal { opacity: 1; transform: none; transition: none; }
+  .sechead__main .label::after { transform: none; transition: none; }
 }

@@ -21,24 +21,11 @@ const {
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
-    <!-- Self-hosted display face: preload so the hero lands set -->
-    <link
-      rel="preload"
-      href="/fonts/TuskerGrotesk-6700Bold.woff2"
-      as="font"
-      type="font/woff2"
-      crossorigin
-    />
-    <!-- General Sans (Fontshare) -->
-    <link
-      href="https://api.fontshare.com/v2/css?f[]=general-sans@400,600,700&display=swap"
-      rel="stylesheet"
-    />
-    <!-- Martian Mono (Google) -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Martian+Mono:wght@400;600&display=swap"
-      rel="stylesheet"
-    />
+    <!-- All faces self-hosted; preload the above-the-fold set so the hero lands set -->
+    <link rel="preload" href="/fonts/TuskerGrotesk-6700Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/GeneralSans-Regular.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/GeneralSans-Bold.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/MartianMono-Variable.woff2" as="font" type="font/woff2" crossorigin />
 
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
@@ -53,7 +40,11 @@ const {
     <slot />
 
     <script>
-      // Quiet scroll reveals. Hero runs its own load sequence in CSS.
+      // Scroll reveals. Hero runs its own load sequence in CSS.
+      // Trigger early (as soon as an element pokes 40px past the fold) so the
+      // move is finishing by the time the eye reaches it. Elements that appear
+      // in the same observer tick share a stagger ramp; a lone element mid-
+      // scroll gets zero delay — no orphaned waits, no blink.
       const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       const targets = document.querySelectorAll<HTMLElement>('.reveal');
 
@@ -62,14 +53,20 @@ const {
       } else {
         const io = new IntersectionObserver(
           (entries) => {
-            for (const entry of entries) {
-              if (entry.isIntersecting) {
-                entry.target.classList.add('in');
-                io.unobserve(entry.target);
-              }
-            }
+            const batch = entries
+              .filter((e) => e.isIntersecting)
+              .sort(
+                (a, b) =>
+                  a.target.getBoundingClientRect().top -
+                  b.target.getBoundingClientRect().top
+              );
+            batch.forEach((e, i) => {
+              (e.target as HTMLElement).style.setProperty('--stagger', String(i));
+              e.target.classList.add('in');
+              io.unobserve(e.target);
+            });
           },
-          { threshold: 0.15, rootMargin: '0px 0px -5% 0px' }
+          { threshold: 0.01, rootMargin: '0px 0px -40px 0px' }
         );
         targets.forEach((el) => io.observe(el));
       }
