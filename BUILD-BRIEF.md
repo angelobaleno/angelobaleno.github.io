@@ -13,7 +13,7 @@ Impress in three seconds through restraint.
 
 - **Who:** the *designer who builds* — design and development as one craft.
 - **For:** athletes/recruits + design & sports peers.
-- **Tagline (primary, use as the hero anchor):** **"Make it match the work."**
+- **Tagline (primary, use as the hero anchor):** **"A standard, not a service."** (updated 2026-07-07; hero drops the comma)
 - **Positioning line (support):** composed, sports-native presence that ships — so the
   presentation finally matches the work.
 - Villain to imply (never name): generic, templated web presence.
@@ -80,7 +80,7 @@ Sections, in order:
 4. **About** — first person ("I", never "we"), plain, composed. Designer who builds; sports/esports
    graphics origin (since ~2020); a standard, not a service.
 5. **Contact** — simple, direct. Email `angelojbaleno@gmail.com`. Mono labels.
-6. **Footer** — mark, `Make it match the work.` or the short signature `in a flash`, minimal.
+6. **Footer** — mark, `A standard, not a service.` or the short signature `in a flash`, minimal.
 
 ### Featured work (real projects — use these)
 - **Athlete Sites** — a multi-tenant platform of recruiting/scouting sites for athletes (first

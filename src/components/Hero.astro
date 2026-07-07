@@ -28,16 +28,15 @@
       </div>
 
       <h1 class="hero__headline">
-        <span class="line line--mid"><span class="line__inner">Make it</span></span>
-        <span class="line line--max"><span class="line__inner">Match</span></span>
-        <span class="line line--mid"><span class="line__inner">the work<span class="dot" aria-hidden="true"></span></span></span>
+        <span class="line line--tag"><span class="line__inner">A standard</span></span>
+        <span class="line line--tag"><span class="line__inner">not a service<span class="dot" aria-hidden="true"></span></span></span>
       </h1>
 
       <div class="hero__threshold" aria-hidden="true"></div>
 
       <p class="hero__support">
-        Design and development, one craft. I build sites for athletes and the
-        people around the game — sites that match the work behind them.
+        Design and development, one craft. I build sites for athletes, teams,
+        and small businesses — presence that looks established, not templated.
       </p>
 
     </div>
@@ -219,6 +218,11 @@
     font-size: clamp(4.25rem, 16.5vw, 13.5rem);
     letter-spacing: 0.005em;
   }
+  /* long single-word punch (e.g. ESTABLISHED) — sized to hold on one line */
+  .line--long { font-size: clamp(2.75rem, 10vw, 8rem); letter-spacing: 0.004em; }
+  /* two-line tagline — both lines equal, centered, kept on one line each */
+  .line--tag { font-size: clamp(2.5rem, 8.5vw, 7rem); letter-spacing: 0.006em; }
+  .line--tag .line__inner { white-space: nowrap; }
 
   .line {
     display: block;
